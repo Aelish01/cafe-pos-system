@@ -1,0 +1,91 @@
+.sidenav-container { height: 100vh; }
+
+.sidenav {
+  width: 250px; background: #4E342E; color: #fff;
+  .logo { display: flex; align-items: center; gap: 10px; padding: 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    span { font-size: 1.75rem; } h2 { margin: 0; font-size: 1.1rem; font-weight: 600; } }
+  mat-nav-list { padding-top: 0.75rem;
+    a { color: rgba(255,255,255,0.78); margin: 2px 8px; border-radius: 6px;
+      &:hover { background: rgba(255,255,255,0.1); color: #fff; }
+      &.active { background: #FFA726; color: #fff; font-weight: 500; } }
+    .logout-item { color: rgba(255,255,255,0.55); margin-top: 8px;
+      &:hover { background: rgba(255,255,255,0.06); } } }
+}
+
+.main-toolbar {
+  background: #6D4C41 !important; position: sticky; top: 0; z-index: 10;
+  .spacer { flex: 1 1 auto; }
+  .user-name { font-size: 0.875rem; color: rgba(255,255,255,0.85); }
+  .menu-btn { margin-right: 8px; }
+}
+
+.content { padding: 1.5rem; background: #FFF8F0; min-height: calc(100vh - 64px); }
+
+// ── Filters ──────────────────────────────────────────────────────────────────
+.filter-card { margin-bottom: 1.25rem; }
+
+.filter-form {
+  display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;
+  mat-form-field { flex: 1; min-width: 160px; }
+  .filter-btns { display: flex; gap: 0.5rem; align-items: center; padding-top: 4px; flex-wrap: wrap; }
+}
+
+// ── Summary ───────────────────────────────────────────────────────────────────
+.summary-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;
+}
+
+.summary-card {
+  background: linear-gradient(135deg, #5D4037, #8D6E63) !important;
+  color: #fff !important;
+  mat-card-content {
+    display: flex; align-items: center; gap: 1rem; padding: 1.25rem !important;
+    mat-icon { font-size: 2rem; width: 2rem; height: 2rem; opacity: 0.9; }
+  }
+  .sum-label { margin: 0 0 2px; font-size: 0.75rem; opacity: 0.8; text-transform: uppercase; }
+  .sum-value { margin: 0; font-size: 1.5rem; font-weight: 700; }
+}
+
+.loading-container { display: flex; justify-content: center; align-items: center; height: 300px; }
+
+// ── Desktop table ─────────────────────────────────────────────────────────────
+.table-card { overflow: hidden; }
+
+.bills-table {
+  width: 100%;
+  .bill-row { cursor: default; &:hover { background: rgba(255,167,38,0.07); } }
+  .amount-cell { font-weight: 600; color: #2E7D32; }
+}
+
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; padding: 3rem; color: #8D6E63; gap: 0.5rem;
+  mat-icon { font-size: 3rem; width: 3rem; height: 3rem; opacity: 0.4; }
+}
+
+// ── Mobile accordion ──────────────────────────────────────────────────────────
+.mobile-bills { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.bill-panel {
+  border-radius: 8px !important;
+  .mobile-amount { font-weight: 700; color: #2E7D32; }
+  .bill-detail { font-size: 0.9rem; color: #333;
+    p { margin: 4px 0; }
+    .items-list { margin: 8px 0 0 1rem; padding: 0; list-style: disc;
+      li { margin: 3px 0; font-size: 0.85rem; color: #555; } }
+  }
+}
+
+@media (max-width: 768px) {
+  .content { padding: 0.75rem; }
+  .summary-row { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .summary-card mat-card-content { padding: 1rem !important; }
+  .summary-card .sum-value { font-size: 1.2rem; }
+  .filter-form mat-form-field { min-width: 130px; }
+}
+
+@media (max-width: 400px) {
+  .summary-row { grid-template-columns: 1fr; }
+  .filter-form { flex-direction: column; }
+  .filter-form mat-form-field { width: 100%; min-width: unset; }
+}

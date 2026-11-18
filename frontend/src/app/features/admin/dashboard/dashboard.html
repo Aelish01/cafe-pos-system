@@ -1,0 +1,95 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile"
+    class="sidenav">
+    <div class="logo">
+      <span>☕</span>
+      <h2>Cafe POS</h2>
+    </div>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active" (click)="closeSidenavIfMobile()">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+      <a mat-list-item routerLink="/admin/menu" routerLinkActive="active" (click)="closeSidenavIfMobile()">
+        <mat-icon matListItemIcon>restaurant_menu</mat-icon>
+        <span matListItemTitle>Menu Management</span>
+      </a>
+      <a mat-list-item routerLink="/admin/sales" routerLinkActive="active" (click)="closeSidenavIfMobile()">
+        <mat-icon matListItemIcon>assessment</mat-icon>
+        <span matListItemTitle>Sales Report</span>
+      </a>
+      <a mat-list-item routerLink="/admin/users" routerLinkActive="active" (click)="closeSidenavIfMobile()">
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>User Management</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="authService.logout()" class="logout-item">
+        <mat-icon matListItemIcon>logout</mat-icon>
+        <span matListItemTitle>Logout</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="main-toolbar">
+      <button mat-icon-button *ngIf="isMobile" (click)="toggleSidenav()" class="menu-btn">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Dashboard</span>
+      <span class="spacer"></span>
+      <span class="user-name">{{ authService.getUser()?.name }}</span>
+    </mat-toolbar>
+
+    <div class="content">
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="48"></mat-spinner>
+      </div>
+
+      <div *ngIf="!loading">
+        <h2 class="section-title">Today's Overview</h2>
+        <div class="stats-grid">
+          <mat-card class="stat-card revenue-card">
+            <mat-card-content>
+              <div class="stat-icon-wrap">
+                <mat-icon>payments</mat-icon>
+              </div>
+              <div class="stat-info">
+                <p class="stat-label">Today's Revenue</p>
+                <h2 class="stat-value">₹{{ todaySales.toFixed(2) }}</h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="stat-card bills-card">
+            <mat-card-content>
+              <div class="stat-icon-wrap">
+                <mat-icon>receipt</mat-icon>
+              </div>
+              <div class="stat-info">
+                <p class="stat-label">Bills Today</p>
+                <h2 class="stat-value">{{ billCount }}</h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="quick-links">
+          <h3 class="section-title">Quick Actions</h3>
+          <div class="links-grid">
+            <a mat-raised-button routerLink="/admin/menu" class="quick-btn">
+              <mat-icon>restaurant_menu</mat-icon> Menu
+            </a>
+            <a mat-raised-button routerLink="/admin/sales" class="quick-btn">
+              <mat-icon>assessment</mat-icon> Sales
+            </a>
+            <a mat-raised-button routerLink="/admin/users" class="quick-btn">
+              <mat-icon>people</mat-icon> Users
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

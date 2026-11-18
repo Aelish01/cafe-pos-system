@@ -1,0 +1,125 @@
+<div class="pos-layout">
+  <!-- Top Navbar -->
+  <mat-toolbar class="pos-toolbar">
+    <span>☕ Cafe POS</span>
+    <span class="spacer"></span>
+
+    <nav class="pos-nav">
+      <a mat-button routerLink="/pos/billing" routerLinkActive="nav-active">
+        <mat-icon>point_of_sale</mat-icon>
+        New Bill
+      </a>
+      <a mat-button routerLink="/pos/bills" routerLinkActive="nav-active">
+        <mat-icon>receipt_long</mat-icon>
+        Today's Bills
+      </a>
+    </nav>
+
+    <span class="spacer"></span>
+    <span class="seller-name">{{ authService.getUser()?.name }}</span>
+    <button mat-icon-button (click)="authService.logout()" matTooltip="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- Bills Content -->
+  <div class="bills-container">
+    <!-- Summary Bar -->
+    <div class="summary-bar">
+      <div class="summary-date">
+        <mat-icon>today</mat-icon>
+        <span>{{ todayDate }}</span>
+      </div>
+      <div class="summary-stats">
+        <div class="stat">
+          <span class="stat-label">Total Bills</span>
+          <span class="stat-value">{{ bills.length }}</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-label">Total Sales</span>
+          <span class="stat-value accent">₹{{ totalSales.toFixed(2) }}</span>
+        </div>
+        <button mat-icon-button (click)="loadBills()" matTooltip="Refresh">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Loading today's bills...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && bills.length === 0" class="empty-state">
+      <mat-icon>receipt_long</mat-icon>
+      <h3>No bills yet today</h3>
+      <p>Bills generated today will appear here.</p>
+      <a mat-raised-button color="primary" routerLink="/pos/billing">
+        <mat-icon>point_of_sale</mat-icon>
+        Create First Bill
+      </a>
+    </div>
+
+    <!-- Bills List -->
+    <div *ngIf="bills.length > 0" class="bills-list">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let bill of bills; let i = index; trackBy: trackByBill" class="bill-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="panel-title">
+              <span class="bill-number">#{{ bills.length - i }}</span>
+              <span class="bill-time">{{ bill.createdAt | date:'h:mm a' : '+0530' }}</span>
+            </mat-panel-title>
+            <mat-panel-description class="panel-desc">
+              <mat-chip class="items-chip">{{ bill.items.length }} item{{ bill.items.length !== 1 ? 's' : '' }}</mat-chip>
+              <span class="bill-total">₹{{ bill.totalAmount.toFixed(2) }}</span>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <!-- Expanded Content -->
+          <ng-template matExpansionPanelContent>
+            <div class="bill-detail">
+              <table class="items-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th class="center">Qty</th>
+                    <th class="right">Unit Price</th>
+                    <th class="right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of bill.items">
+                    <td>{{ item.name }}</td>
+                    <td class="center">{{ item.quantity }}</td>
+                    <td class="right">₹{{ item.price.toFixed(2) }}</td>
+                    <td class="right">₹{{ (item.price * item.quantity).toFixed(2) }}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="total-row">
+                    <td colspan="3">Total</td>
+                    <td class="right">₹{{ bill.totalAmount.toFixed(2) }}</td>
+                  </tr>
+                </tfoot>
+              </table>
+
+              <div class="bill-meta">
+                <span>
+                  <mat-icon>schedule</mat-icon>
+                  {{ bill.createdAt | date:'dd MMM yyyy, h:mm a' : '+0530' }}
+                </span>
+                <button mat-stroked-button (click)="reprintBill(bill)">
+                  <mat-icon>print</mat-icon>
+                  Reprint
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>

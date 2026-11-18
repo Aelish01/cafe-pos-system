@@ -1,0 +1,109 @@
+.sidenav-container { height: 100vh; }
+
+.sidenav {
+  width: 250px;
+  background: #4E342E;
+  color: #fff;
+
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    padding: 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    span { font-size: 1.75rem; }
+    h2 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+  }
+
+  mat-nav-list {
+    padding-top: 0.75rem;
+    a {
+      color: rgba(255,255,255,0.78); margin: 2px 8px; border-radius: 6px;
+      &:hover { background: rgba(255,255,255,0.1); color: #fff; }
+      &.active { background: #FFA726; color: #fff; font-weight: 500; }
+    }
+    .logout-item { color: rgba(255,255,255,0.55); margin-top: 8px;
+      &:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); } }
+  }
+}
+
+.main-toolbar {
+  background: #6D4C41 !important; position: sticky; top: 0; z-index: 10;
+  .spacer { flex: 1 1 auto; }
+  .user-name { font-size: 0.875rem; color: rgba(255,255,255,0.85); }
+  .menu-btn { margin-right: 8px; }
+}
+
+.content {
+  padding: 1.5rem;
+  background: #FFF8F0;
+  min-height: calc(100vh - 64px);
+}
+
+.header-actions {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.25rem;
+  .count-label { font-size: 0.875rem; color: #8D6E63; }
+}
+
+.loading-container {
+  display: flex; justify-content: center; align-items: center; height: 300px;
+}
+
+// ── Desktop table ────────────────────────────────────────────────────────────
+.table-card { overflow: hidden; }
+
+.menu-table {
+  width: 100%;
+  .status-badge {
+    padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 500;
+    &.available   { background: #E8F5E9; color: #2E7D32; }
+    &.unavailable { background: #FFEBEE; color: #C62828; }
+  }
+}
+
+// ── Mobile card list ─────────────────────────────────────────────────────────
+.mobile-list {
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+
+.item-card {
+  mat-card-content { padding: 12px 16px !important; }
+
+  .item-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 8px; margin-bottom: 10px;
+  }
+
+  .item-info {
+    display: flex; flex-direction: column; gap: 2px; min-width: 0;
+    .item-name { font-weight: 600; font-size: 0.95rem; color: #4E342E;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-category { font-size: 0.8rem; color: #8D6E63; }
+  }
+
+  .item-right {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0;
+    .item-price { font-weight: 700; font-size: 1rem; color: #4E342E; }
+  }
+
+  .status-badge {
+    padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 500;
+    &.available   { background: #E8F5E9; color: #2E7D32; }
+    &.unavailable { background: #FFEBEE; color: #C62828; }
+  }
+
+  .item-actions {
+    display: flex; gap: 0.5rem;
+    button { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; }
+  }
+}
+
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 3rem; color: #8D6E63; gap: 0.5rem;
+  mat-icon { font-size: 3rem; width: 3rem; height: 3rem; opacity: 0.4; }
+}
+
+@media (max-width: 768px) {
+  .content { padding: 0.75rem; }
+  .header-actions { margin-bottom: 1rem; }
+}
