@@ -18,7 +18,7 @@ export interface Bill {
 
 @Injectable({ providedIn: 'root' })
 export class BillService {
-  private readonly API = 'http://localhost:5000/api';
+  private readonly API = 'http://https://cafe-pos-system-9ptq.onrender.com/api';
 
   constructor(private http: HttpClient) {}
 
