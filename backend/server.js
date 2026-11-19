@@ -10,24 +10,24 @@ const allowedOrigins = [
     'http://localhost:4200'
 ];
 
-app.use(cors({
-    origin: function (origin, callback) {
-        // Postman કે mobile/server-to-server call માટે !origin હોય તો પણ ચાલે
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true
-}));
-
-// // Middleware
 // app.use(cors({
-//     origin: 'http://localhost:4200',
+//     origin: function (origin, callback) {
+//         // Postman કે mobile/server-to-server call માટે !origin હોય તો પણ ચાલે
+//         if (!origin || allowedOrigins.includes(origin)) {
+//             callback(null, true);
+//         } else {
+//             callback(new Error('Not allowed by CORS'));
+//         }
+//     },
 //     credentials: true
 // }));
-// app.use(express.json());
+
+// Middleware
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
+app.use(express.json());
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
