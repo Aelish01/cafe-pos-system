@@ -201,6 +201,7 @@ color:white;
       &.center { text-align: center; }
       &.right { text-align: right; }
     }
+    .bill-item-image { display: block; width: 48px; height: 40px; border-radius: 5px; object-fit: cover; }
 
     tfoot .total-row {
       td {

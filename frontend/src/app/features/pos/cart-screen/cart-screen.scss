@@ -79,6 +79,7 @@
   border-bottom: 1px solid #EFEBE9;
 
   .item-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .item-info .item-image { width: 72px; height: 56px; margin-bottom: 4px; border-radius: 6px; object-fit: cover; }
   .item-info strong { overflow-wrap: anywhere; color: #4E342E; }
   .item-info span { color: #8D6E63; font-size: 0.8rem; }
   .qty-control { display: flex; align-items: center; }
@@ -153,6 +154,7 @@
     padding: 10px 8px;
 
     .item-info { grid-column: 1; }
+    .item-info .item-image { width: 64px; height: 48px; }
     .qty-control { grid-column: 1; grid-row: 2; }
     .item-total { grid-column: 2; grid-row: 1 / span 2; }
     > button { grid-column: 3; grid-row: 1 / span 2; }

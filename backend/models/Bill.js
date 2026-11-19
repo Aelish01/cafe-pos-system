@@ -8,6 +8,8 @@ const billSchema = new mongoose.Schema({
     },
     name: String,
     price: Number,
+    originalPrice: Number,
+    image: String,
     quantity: Number
   }],
   totalAmount: {

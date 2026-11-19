@@ -27,7 +27,7 @@ app.use(cors({
     origin: allowedOrigins,
     credentials: true
 }));
-app.use(express.json());
+app.use(express.json({ limit: '2mb' }));
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)

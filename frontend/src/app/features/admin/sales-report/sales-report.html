@@ -138,7 +138,8 @@
             <p><strong>Payment:</strong> {{ bill.paymentMethod === 'online' ? 'Online' : bill.paymentMethod === 'cash' ? 'Cash' : 'Not recorded' }}</p>
             <ul class="items-list">
               <li *ngFor="let item of bill.items">
-                {{ item.name }} × {{ item.quantity }} = ₹{{ (item.price * item.quantity).toFixed(2) }}
+                <img *ngIf="item.image" class="report-item-image" [src]="item.image" [alt]="item.name">
+                <span>{{ item.name }} × {{ item.quantity }} = ₹{{ (item.price * item.quantity).toFixed(2) }}</span>
               </li>
             </ul>
           </div>

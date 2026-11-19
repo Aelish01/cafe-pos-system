@@ -12,7 +12,22 @@ const menuItemSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: true,
-    min: 0
+    min: 0.01
+  },
+  discountPrice: {
+    type: Number,
+    min: 0.01,
+    default: null
+  },
+  description: {
+    type: String,
+    trim: true,
+    maxlength: 1000,
+    default: ''
+  },
+  image: {
+    type: String,
+    default: ''
   },
   available: {
     type: Boolean,

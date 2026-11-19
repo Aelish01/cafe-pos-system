@@ -35,13 +35,16 @@ exports.createBill = async (req, res) => {
         return res.status(400).json({ message: `Menu item ${menuItem.name} is not available` });
       }
       
-      const itemTotal = menuItem.price * item.quantity;
+      const unitPrice = menuItem.discountPrice ?? menuItem.price;
+      const itemTotal = unitPrice * item.quantity;
       totalAmount += itemTotal;
       
       billItems.push({
         menuItemId: menuItem._id,
         name: menuItem.name,
-        price: menuItem.price,
+        price: unitPrice,
+        originalPrice: menuItem.discountPrice != null ? menuItem.price : undefined,
+        image: menuItem.image || '',
         quantity: item.quantity
       });
     }
@@ -67,8 +70,9 @@ exports.getAllBills = async (req, res) => {
   try {
     const bills = await Bill.find()
       .sort({ createdAt: -1 })
-      .populate('createdBy', 'name username');
-    res.json(bills);
+      .populate('createdBy', 'name username')
+      .populate('items.menuItemId', 'image');
+    res.json(withItemImages(bills));
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
@@ -90,10 +94,28 @@ exports.getTodayBills = async (req, res) => {
     const bills = await Bill.find({
       createdAt: { $gte: new Date(startUTC), $lte: new Date(endUTC) }
     })
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .populate('items.menuItemId', 'image');
     
-    res.json(bills);
+    res.json(withItemImages(bills));
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
+
+function withItemImages(bills) {
+  return bills.map(bill => {
+    const data = bill.toObject();
+    data.items = data.items.map(item => {
+      const menuItem = item.menuItemId && typeof item.menuItemId === 'object'
+        ? item.menuItemId
+        : null;
+      return {
+        ...item,
+        menuItemId: menuItem?._id ?? item.menuItemId,
+        image: item.image || menuItem?.image || ''
+      };
+    });
+    return data;
+  });
+}

@@ -40,6 +40,10 @@ export class CartService {
   }
 
   get total(): number {
-    return this.items.reduce((sum, item) => sum + item.item.price * item.quantity, 0);
+    return this.items.reduce((sum, item) => sum + this.getUnitPrice(item.item) * item.quantity, 0);
+  }
+
+  getUnitPrice(item: MenuItem): number {
+    return item.discountPrice ?? item.price;
   }
 }

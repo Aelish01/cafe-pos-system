@@ -59,8 +59,13 @@
 
       <div *ngFor="let cartItem of cartService.items; let i = index" class="cart-row">
         <div class="item-info">
+          <img *ngIf="cartItem.item.image" class="item-image" [src]="cartItem.item.image" [alt]="cartItem.item.name">
           <strong>{{ cartItem.item.name }}</strong>
-          <span>₹{{ cartItem.item.price.toFixed(2) }} each</span>
+          <span *ngIf="cartItem.item.description">{{ cartItem.item.description }}</span>
+          <span>
+            <del *ngIf="cartItem.item.discountPrice">₹{{ cartItem.item.price.toFixed(2) }}</del>
+            ₹{{ cartService.getUnitPrice(cartItem.item).toFixed(2) }} each
+          </span>
         </div>
         <div class="qty-control" aria-label="Item quantity">
           <button mat-icon-button (click)="cartService.updateQuantity(i, -1)" aria-label="Decrease quantity">
@@ -71,7 +76,7 @@
             <mat-icon>add</mat-icon>
           </button>
         </div>
-        <strong class="item-total">₹{{ (cartItem.item.price * cartItem.quantity).toFixed(2) }}</strong>
+        <strong class="item-total">₹{{ (cartService.getUnitPrice(cartItem.item) * cartItem.quantity).toFixed(2) }}</strong>
         <button mat-icon-button color="warn" (click)="cartService.removeItem(i)" aria-label="Remove item">
           <mat-icon>delete_outline</mat-icon>
         </button>

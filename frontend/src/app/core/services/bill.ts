@@ -10,6 +10,8 @@ export interface Bill {
     menuItemId: string;
     name: string;
     price: number;
+    originalPrice?: number;
+    image?: string;
     quantity: number;
   }>;
   totalAmount: number;

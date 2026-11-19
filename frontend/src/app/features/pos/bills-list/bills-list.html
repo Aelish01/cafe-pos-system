@@ -94,6 +94,7 @@
               <table class="items-table">
                 <thead>
                   <tr>
+                    <th>Image</th>
                     <th>Item</th>
                     <th class="center">Qty</th>
                     <th class="right">Unit Price</th>
@@ -102,6 +103,9 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of bill.items">
+                    <td>
+                      <img *ngIf="item.image" class="bill-item-image" [src]="item.image" [alt]="item.name">
+                    </td>
                     <td>{{ item.name }}</td>
                     <td class="center">{{ item.quantity }}</td>
                     <td class="right">₹{{ item.price.toFixed(2) }}</td>
@@ -110,7 +114,7 @@
                 </tbody>
                 <tfoot>
                   <tr class="total-row">
-                    <td colspan="3">Total</td>
+                    <td colspan="4">Total</td>
                     <td class="right">₹{{ bill.totalAmount.toFixed(2) }}</td>
                   </tr>
                 </tfoot>
