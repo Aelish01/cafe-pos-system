@@ -3,7 +3,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-
+color:white;
   .spacer { flex: 1 1 auto; }
 
   .pos-nav {
@@ -11,7 +11,7 @@
     gap: 0.25rem;
 
     a {
-      color: rgba(255,255,255,0.85);
+      color: white;
       display: flex;
       align-items: center;
       gap: 0.4rem;
@@ -37,6 +37,24 @@
     font-size: 0.875rem;
     color: rgba(255,255,255,0.8);
     margin-right: 0.5rem;
+  }
+
+  .cart-header-toggle { position: relative; color: #fff; }
+  .cart-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: grid;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    place-items: center;
+    border-radius: 9px;
+    background: #E53935;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
   }
 }
 
@@ -149,6 +167,12 @@
       min-width: 80px;
       text-align: right;
     }
+
+    .payment-chip {
+      font-size: 0.7rem;
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
   }
 }
 
@@ -204,12 +228,57 @@
       gap: 4px;
       mat-icon { font-size: 16px; width: 16px; height: 16px; }
     }
+
+    .bill-meta .payment-method { display: flex; align-items: center; gap: 4px; }
   }
 }
 
 @media (max-width: 600px) {
-  .summary-bar { flex-direction: column; align-items: flex-start; }
-  .bills-list { padding: 0 0.5rem; }
-  .panel-title .bill-time { font-size: 0.85rem; }
-  .panel-desc .bill-total { min-width: 60px; font-size: 0.9rem; }
+  .pos-toolbar {
+    min-height: 56px;
+    height: auto;
+    padding: 0 8px;
+
+    > span:first-child { font-size: 0.95rem; white-space: nowrap; }
+    .spacer { flex: 0 0 4px; }
+
+    .pos-nav {
+      gap: 0;
+
+      a {
+        min-width: 40px;
+        padding: 0 6px;
+        justify-content: center;
+
+        span { display: none; }
+      }
+    }
+
+    .seller-name { display: none; }
+  }
+
+  .summary-bar {
+    align-items: flex-start;
+    padding: 12px 16px;
+
+    .summary-date { font-size: 0.85rem; }
+    .summary-stats { width: 100%; justify-content: space-between; gap: 8px; }
+    .stat-value { font-size: 1rem; }
+  }
+
+  .bills-list { margin: 1rem auto; padding: 0 0.5rem; }
+  .bill-panel .panel-title { gap: 0.5rem; }
+  .bill-panel .panel-title .bill-time { font-size: 0.8rem; }
+  .bill-panel .panel-desc { gap: 0.35rem; }
+  .bill-panel .panel-desc .items-chip { font-size: 0.65rem; }
+  .bill-panel .panel-desc .bill-total { min-width: 0; font-size: 0.8rem; }
+
+  .bill-detail {
+    overflow-x: auto;
+
+    .items-table { min-width: 360px; }
+    .bill-meta { gap: 8px; }
+    .bill-meta span { font-size: 0.7rem; }
+    .bill-meta button { min-height: 40px; }
+  }
 }

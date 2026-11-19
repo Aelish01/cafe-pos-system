@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
@@ -44,12 +44,16 @@ export class Dashboard implements OnInit, OnDestroy {
   constructor(
     private billService: BillService,
     public authService: AuthService,
-    private bp: BreakpointObserver
+    private bp: BreakpointObserver,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.bpSub = this.bp.observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
-      .subscribe(result => { this.isMobile = result.matches; });
+      .subscribe(result => {
+        this.isMobile = result.matches;
+        this.cdr.markForCheck();
+      });
     this.loadTodayStats();
   }
 
@@ -61,8 +65,12 @@ export class Dashboard implements OnInit, OnDestroy {
         this.billCount = bills.length;
         this.todaySales = bills.reduce((sum, b) => sum + b.totalAmount, 0);
         this.loading = false;
+        this.cdr.markForCheck();
       },
-      error: () => { this.loading = false; }
+      error: () => {
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
     });
   }
 

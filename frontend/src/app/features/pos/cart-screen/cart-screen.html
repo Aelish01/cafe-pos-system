@@ -1,0 +1,108 @@
+<div class="pos-layout">
+  <mat-toolbar class="pos-toolbar">
+    <span>☕ Happiness Cafe</span>
+    <span class="spacer"></span>
+
+    <nav class="pos-nav">
+      <a mat-button routerLink="/pos/billing">
+        <mat-icon>point_of_sale</mat-icon>
+        <span>New Bill</span>
+      </a>
+      <a mat-button routerLink="/pos/bills">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Today's Bills</span>
+      </a>
+    </nav>
+
+    <a
+      mat-icon-button
+      class="cart-header-toggle nav-active"
+      routerLink="/pos/cart"
+      [attr.aria-label]="'Cart, ' + cartService.itemCount + ' items'">
+      <mat-icon>shopping_cart</mat-icon>
+      <span *ngIf="cartService.itemCount > 0" class="cart-count">{{ cartService.itemCount }}</span>
+    </a>
+
+    <span class="spacer"></span>
+    <span class="seller-name">{{ authService.getUser()?.name }}</span>
+    <button mat-icon-button (click)="authService.logout()" aria-label="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <main class="cart-page">
+    <header class="cart-page-header">
+      <div>
+        <h1>Cart details</h1>
+        <p>{{ cartService.itemCount }} item{{ cartService.itemCount === 1 ? '' : 's' }} in your order</p>
+      </div>
+      <a mat-stroked-button routerLink="/pos/billing">
+        <mat-icon>add</mat-icon>
+        Add more items
+      </a>
+    </header>
+
+    <section *ngIf="cartService.items.length === 0" class="empty-cart">
+      <mat-icon>shopping_cart</mat-icon>
+      <h2>Your cart is empty</h2>
+      <p>Add items from the menu to start a bill.</p>
+      <a mat-raised-button color="primary" routerLink="/pos/billing">Go to menu</a>
+    </section>
+
+    <section *ngIf="cartService.items.length > 0" class="cart-card">
+      <div class="cart-table-header">
+        <span>Item</span>
+        <span>Quantity</span>
+        <span>Amount</span>
+        <span></span>
+      </div>
+
+      <div *ngFor="let cartItem of cartService.items; let i = index" class="cart-row">
+        <div class="item-info">
+          <strong>{{ cartItem.item.name }}</strong>
+          <span>₹{{ cartItem.item.price.toFixed(2) }} each</span>
+        </div>
+        <div class="qty-control" aria-label="Item quantity">
+          <button mat-icon-button (click)="cartService.updateQuantity(i, -1)" aria-label="Decrease quantity">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <span>{{ cartItem.quantity }}</span>
+          <button mat-icon-button (click)="cartService.updateQuantity(i, 1)" aria-label="Increase quantity">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <strong class="item-total">₹{{ (cartItem.item.price * cartItem.quantity).toFixed(2) }}</strong>
+        <button mat-icon-button color="warn" (click)="cartService.removeItem(i)" aria-label="Remove item">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </div>
+
+      <footer class="cart-footer">
+        <button mat-button color="warn" (click)="cartService.clear()">Clear cart</button>
+        <div class="checkout">
+          <fieldset class="payment-method">
+            <legend>Payment method</legend>
+            <label>
+              <input type="radio" name="paymentMethod" value="cash" [(ngModel)]="paymentMethod">
+              <mat-icon>payments</mat-icon>
+              Cash
+            </label>
+            <label>
+              <input type="radio" name="paymentMethod" value="online" [(ngModel)]="paymentMethod">
+              <mat-icon>account_balance</mat-icon>
+              Online
+            </label>
+          </fieldset>
+          <div class="grand-total">
+            <span>Total</span>
+            <strong>₹{{ cartService.total.toFixed(2) }}</strong>
+          </div>
+          <button mat-raised-button color="primary" (click)="generateAndPrint()" [disabled]="isGenerating">
+            <mat-icon>receipt</mat-icon>
+            {{ isGenerating ? 'Generating...' : 'Generate & Print Bill' }}
+          </button>
+        </div>
+      </footer>
+    </section>
+  </main>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
@@ -39,7 +39,7 @@ export class SalesReport implements OnInit, OnDestroy {
 
   bills: Bill[] = [];
   filteredBills: Bill[] = [];
-  displayedColumns = ['createdAt', 'createdByName', 'itemCount', 'totalAmount'];
+  displayedColumns = ['createdAt', 'createdByName', 'itemCount', 'paymentMethod', 'totalAmount'];
   loading = true;
   filterForm: FormGroup;
   isMobile = false;
@@ -49,14 +49,18 @@ export class SalesReport implements OnInit, OnDestroy {
     private billService: BillService,
     private fb: FormBuilder,
     public authService: AuthService,
-    private bp: BreakpointObserver
+    private bp: BreakpointObserver,
+    private cdr: ChangeDetectorRef
   ) {
     this.filterForm = this.fb.group({ startDate: [''], endDate: [''] });
   }
 
   ngOnInit() {
     this.bpSub = this.bp.observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
-      .subscribe(r => { this.isMobile = r.matches; });
+      .subscribe(r => {
+        this.isMobile = r.matches;
+        this.cdr.markForCheck();
+      });
     this.loadBills();
   }
 
@@ -65,8 +69,16 @@ export class SalesReport implements OnInit, OnDestroy {
   loadBills() {
     this.loading = true;
     this.billService.getAllBills().subscribe({
-      next: (bills) => { this.bills = bills; this.filteredBills = bills; this.loading = false; },
-      error: () => { this.loading = false; }
+      next: (bills) => {
+        this.bills = bills;
+        this.filteredBills = bills;
+        this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
     });
   }
 

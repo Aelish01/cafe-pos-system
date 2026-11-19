@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export type PaymentMethod = 'cash' | 'online';
+
 export interface Bill {
   _id?: string;
   items: Array<{
@@ -14,15 +16,24 @@ export interface Bill {
   createdBy: string;
   createdByName: string;
   createdAt: Date;
+  paymentMethod?: PaymentMethod;
+}
+
+export interface CreateBillRequest {
+  items: Array<{
+    menuItemId: string;
+    quantity: number;
+  }>;
+  paymentMethod: PaymentMethod;
 }
 
 @Injectable({ providedIn: 'root' })
 export class BillService {
-  private readonly API = 'https://cafe-pos-system-9ptq.onrender.com/api';
+  private readonly API = 'http://localhost:5000/api';
 
   constructor(private http: HttpClient) {}
 
-  createBill(bill: any): Observable<Bill> {
+  createBill(bill: CreateBillRequest): Observable<Bill> {
     return this.http.post<Bill>(`${this.API}/bills`, bill);
   }
 

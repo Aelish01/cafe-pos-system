@@ -14,6 +14,11 @@ const billSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  paymentMethod: {
+    type: String,
+    enum: ['cash', 'online'],
+    required: true
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

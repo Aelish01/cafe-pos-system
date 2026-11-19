@@ -101,7 +101,7 @@ This plan implements a full-stack Cafe POS system with Angular 22 (frontend) and
       Verify: `npm run build --configuration development` in frontend directory completes without errors.
 
 - [ ] 17. Create Angular environment configuration file.
-      Create environment.ts file exporting const environment = {production: false, apiUrl: 'https://cafe-pos-system-9ptq.onrender.com/api'}. Create environment.prod.ts with production: true and same apiUrl (update later for production).
+      Create environment.ts file exporting const environment = {production: false, apiUrl: 'http://localhost:5000/api'}. Create environment.prod.ts with production: true and same apiUrl (update later for production).
       Files: /Users/rahul/Aelish/cafe/cafe-pos-system/frontend/src/environments/environment.ts, /Users/rahul/Aelish/cafe/cafe-pos-system/frontend/src/environments/environment.prod.ts
       Verify: `cat frontend/src/environments/environment.ts` shows apiUrl configuration.
 

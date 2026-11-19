@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +12,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BillService, Bill } from '../../../core/services/bill';
+import { CartService } from '../../../core/services/cart';
 import { AuthService } from '../../../core/services/auth';
 
 @Component({
@@ -53,8 +54,10 @@ export class BillsList implements OnInit {
 
   constructor(
     private billService: BillService,
+    public cartService: CartService,
     public authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -68,10 +71,12 @@ export class BillsList implements OnInit {
         this.bills = bills;
         this.totalSales = bills.reduce((sum, bill) => sum + bill.totalAmount, 0);
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.snackBar.open('Failed to load bills', 'Close', { duration: 3000 });
         this.isLoading = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -116,6 +121,7 @@ export class BillsList implements OnInit {
             <h2>☕ CAFE POS</h2>
             <p>${new Date(bill.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</p>
             ${bill.createdByName ? `<p>Served by: ${bill.createdByName}</p>` : ''}
+            <p>Payment: ${bill.paymentMethod === 'online' ? 'Online' : bill.paymentMethod === 'cash' ? 'Cash' : 'Not recorded'}</p>
           </div>
           <p class="reprint-label">*** REPRINT ***</p>
           <div class="divider"></div>

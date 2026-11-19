@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
@@ -156,12 +156,16 @@ export class UserManagement implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     public authService: AuthService,
-    private bp: BreakpointObserver
+    private bp: BreakpointObserver,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.bpSub = this.bp.observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
-      .subscribe(r => { this.isMobile = r.matches; });
+      .subscribe(r => {
+        this.isMobile = r.matches;
+        this.cdr.markForCheck();
+      });
     this.loadUsers();
   }
 
@@ -170,8 +174,15 @@ export class UserManagement implements OnInit, OnDestroy {
   loadUsers() {
     this.loading = true;
     this.userService.getAll().subscribe({
-      next: (users) => { this.users = users; this.loading = false; },
-      error: () => { this.loading = false; }
+      next: (users) => {
+        this.users = users;
+        this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
     });
   }
 

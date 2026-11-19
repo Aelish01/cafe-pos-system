@@ -7,6 +7,7 @@ import { MenuManagement } from './features/admin/menu-management/menu-management
 import { SalesReport } from './features/admin/sales-report/sales-report';
 import { UserManagement } from './features/admin/user-management/user-management';
 import { BillingScreen } from './features/pos/billing-screen/billing-screen';
+import { CartScreen } from './features/pos/cart-screen/cart-screen';
 import { BillsList } from './features/pos/bills-list/bills-list';
 
 export const routes: Routes = [
@@ -29,6 +30,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'billing', pathMatch: 'full' },
       { path: 'billing', component: BillingScreen },
+      { path: 'cart', component: CartScreen },
       { path: 'bills', component: BillsList },
     ]
   },

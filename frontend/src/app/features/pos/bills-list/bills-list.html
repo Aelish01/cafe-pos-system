@@ -1,23 +1,32 @@
 <div class="pos-layout">
   <!-- Top Navbar -->
   <mat-toolbar class="pos-toolbar">
-    <span>☕ Cafe POS</span>
+    <span>☕ Happiness Cafe</span>
     <span class="spacer"></span>
 
     <nav class="pos-nav">
       <a mat-button routerLink="/pos/billing" routerLinkActive="nav-active">
         <mat-icon>point_of_sale</mat-icon>
-        New Bill
+        <span>New Bill</span>
       </a>
       <a mat-button routerLink="/pos/bills" routerLinkActive="nav-active">
         <mat-icon>receipt_long</mat-icon>
-        Today's Bills
+        <span>Today's Bills</span>
       </a>
     </nav>
 
+    <a
+      mat-icon-button
+      class="cart-header-toggle"
+      routerLink="/pos/cart"
+      [attr.aria-label]="'Cart, ' + cartService.itemCount + ' items'">
+      <mat-icon>shopping_cart</mat-icon>
+      <span *ngIf="cartService.itemCount > 0" class="cart-count">{{ cartService.itemCount }}</span>
+    </a>
+
     <span class="spacer"></span>
     <span class="seller-name">{{ authService.getUser()?.name }}</span>
-    <button mat-icon-button (click)="authService.logout()" matTooltip="Logout">
+    <button mat-icon-button (click)="authService.logout()" matTooltip="Logout" aria-label="Logout">
       <mat-icon>logout</mat-icon>
     </button>
   </mat-toolbar>
@@ -40,7 +49,7 @@
           <span class="stat-label">Total Sales</span>
           <span class="stat-value accent">₹{{ totalSales.toFixed(2) }}</span>
         </div>
-        <button mat-icon-button (click)="loadBills()" matTooltip="Refresh">
+        <button mat-icon-button (click)="loadBills()" matTooltip="Refresh" aria-label="Refresh bills">
           <mat-icon>refresh</mat-icon>
         </button>
       </div>
@@ -71,6 +80,7 @@
             <mat-panel-title class="panel-title">
               <span class="bill-number">#{{ bills.length - i }}</span>
               <span class="bill-time">{{ bill.createdAt | date:'h:mm a' : '+0530' }}</span>
+              <mat-chip class="payment-chip">{{ bill.paymentMethod === 'online' ? 'Online' : bill.paymentMethod === 'cash' ? 'Cash' : 'Not recorded' }}</mat-chip>
             </mat-panel-title>
             <mat-panel-description class="panel-desc">
               <mat-chip class="items-chip">{{ bill.items.length }} item{{ bill.items.length !== 1 ? 's' : '' }}</mat-chip>
@@ -110,6 +120,10 @@
                 <span>
                   <mat-icon>schedule</mat-icon>
                   {{ bill.createdAt | date:'dd MMM yyyy, h:mm a' : '+0530' }}
+                </span>
+                <span class="payment-method">
+                  <mat-icon>{{ bill.paymentMethod === 'online' ? 'account_balance' : 'payments' }}</mat-icon>
+                  Payment: {{ bill.paymentMethod === 'online' ? 'Online' : bill.paymentMethod === 'cash' ? 'Cash' : 'Not recorded' }}
                 </span>
                 <button mat-stroked-button (click)="reprintBill(bill)">
                   <mat-icon>print</mat-icon>

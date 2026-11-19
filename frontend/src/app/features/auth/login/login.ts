@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -34,7 +34,8 @@ export class Login {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
   ) {
     this.form = this.fb.group({
       username: ['', Validators.required],
@@ -48,6 +49,7 @@ export class Login {
     this.authService.login(this.form.value.username, this.form.value.password).subscribe({
       next: (res: any) => {
         this.loading = false;
+        this.cdr.markForCheck();
         if (res.user.role === 'admin') {
           this.router.navigate(['/admin/dashboard']);
         } else {
@@ -57,6 +59,7 @@ export class Login {
       error: (err) => {
         this.loading = false;
         this.snackBar.open(err.error?.message || 'Login failed', 'Close', { duration: 3000 });
+        this.cdr.markForCheck();
       }
     });
   }

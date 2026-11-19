@@ -3,7 +3,11 @@ const MenuItem = require('../models/MenuItem');
 
 exports.createBill = async (req, res) => {
   try {
-    const { items } = req.body;
+    const { items, paymentMethod } = req.body;
+
+    if (!['cash', 'online'].includes(paymentMethod)) {
+      return res.status(400).json({ message: 'Payment method must be cash or online' });
+    }
     
     // Validate items array
     if (!items || !Array.isArray(items) || items.length === 0) {
@@ -45,6 +49,7 @@ exports.createBill = async (req, res) => {
     const bill = new Bill({
       items: billItems,
       totalAmount,
+      paymentMethod,
       createdBy: req.user.id,
       createdByName: req.user.name
     });
