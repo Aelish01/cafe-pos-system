@@ -122,7 +122,7 @@ cd /Users/rahul/Aelish/cafe/cafe-pos-system/backend
 npm install
 npm run dev
 ```
-Server runs on http://localhost:5000
+Server runs on https://cafe-pos-system-9ptq.onrender.com
 
 ### Frontend
 ```bash

@@ -5,7 +5,7 @@ import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly API = 'http://localhost:5000/api';
+  private readonly API = 'https://cafe-pos-system-9ptq.onrender.com/api';
 
   constructor(private http: HttpClient, private router: Router) {}
 
