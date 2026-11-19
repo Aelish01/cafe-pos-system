@@ -12,7 +12,7 @@ export interface MenuItem {
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
-  private readonly API = 'http://https://cafe-pos-system-9ptq.onrender.com/api';
+  private readonly API = 'https://cafe-pos-system-9ptq.onrender.com/api';
 
   constructor(private http: HttpClient) {}
 
